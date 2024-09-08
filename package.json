@@ -11,9 +11,12 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@cloudflare/ai-utils": "^1.0.1",
+    "@iconify-json/simple-icons": "^1.2.1",
     "@nuxt/eslint": "^0.5.5",
     "@nuxt/ui": "^2.18.4",
     "@nuxthub/core": "^0.7.9",
+    "@octokit/rest": "^21.0.2",
     "nuxt": "^3.13.0",
     "nuxt-auth-utils": "^0.3.7",
     "vue": "^3.4.38",
