@@ -17,6 +17,10 @@ export default defineNuxtConfig({
     config: {
       stylistic: {
         quotes: 'single',
+        semi: true,
+        commaDangle: 'only-multiline',
+        braceStyle: '1tbs',
+        arrowParens: true,
       },
     },
   },
