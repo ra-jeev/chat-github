@@ -1,7 +1,9 @@
-const systemPrompt = `You are a helpful assistant who helps users find information on GitHub. \
-When a user asks for information use the searchGithub function to perform the search. 
+import { useId } from 'vue';
 
-Here's detailed information about the available endpoints and their parameters:
+const systemPrompt = `You are a helpful assistant who helps users find information on GitHub. \
+When a user asks for information use the supplied tools to find the information. 
+
+Here  detailed information about the available endpoints and their parameters:
 
 1. commits (/search/commits):
   - Sort options: author-date, committer-date
@@ -58,9 +60,9 @@ export default defineEventHandler(async (event) => {
   ];
 
   try {
-    const llmResponse = await handleMessageWithGroq(llmMessages);
+    const llmResponse = await handleMessageWithOpenAI(llmMessages);
 
-    return { role: 'assistant', content: llmResponse ?? '' };
+    return { role: 'assistant', id: useId(), content: llmResponse ?? '' };
   } catch (error) {
     console.error(error);
     throw createError({
