@@ -1,7 +1,5 @@
 import { Groq } from 'groq-sdk';
 
-const MODEL = 'llama3-groq-70b-8192-tool-use-preview';
-
 let _groq: Groq;
 export function useGroq() {
   if (!_groq) {
@@ -51,13 +49,13 @@ export async function handleMessageWithGroq(
   ];
 
   const groq = useGroq();
-  // const MODEL = 'llama-3.1-70b-versatile';
+  const MODEL = 'llama-3.1-70b-versatile';
 
   const response = await groq.chat.completions.create({
     model: MODEL,
     messages,
     tools,
-    tool_choice: 'required',
+    tool_choice: 'auto',
     max_tokens: 4096,
   });
 
