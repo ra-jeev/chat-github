@@ -24,10 +24,14 @@
             }`"
           />
         </div>
-        <div>
+        <div v-if="message.role === 'user'">
           {{ message.content }}
         </div>
-        <!-- <AssistantMessage v-else :content="message.content" /> -->
+        <MDC
+          v-else
+          :value="message.content"
+          class="flex-1 prose dark:prose-invert"
+        />
       </div>
       <ChatLoadingSkeleton v-if="loading" />
     </div>
@@ -59,6 +63,7 @@
 
 <script setup lang="ts">
 type Message = {
+  id?: string;
   role: string;
   content: string;
 };
@@ -98,7 +103,7 @@ const sendMessage = async () => {
   const tmpMessage = userMessage.value;
   try {
     userMessage.value = '';
-    messages.value.push({ role: 'user', content: tmpMessage });
+    messages.value.push({ role: 'user', id: useId(), content: tmpMessage });
     const res = await $fetch('/api/chat', {
       method: 'POST',
       body: {
