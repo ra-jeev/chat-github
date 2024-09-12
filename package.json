@@ -11,24 +11,24 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@iconify-json/simple-icons": "^1.2.1",
-    "@nuxt/eslint": "^0.5.5",
+    "@iconify-json/simple-icons": "^1.2.2",
+    "@nuxt/eslint": "^0.5.7",
     "@nuxt/ui": "^2.18.4",
-    "@nuxthub/core": "^0.7.9",
+    "@nuxthub/core": "^0.7.12",
     "@nuxtjs/mdc": "^0.8.3",
     "@octokit/rest": "^21.0.2",
     "groq-sdk": "^0.7.0",
-    "nuxt": "^3.13.0",
-    "nuxt-auth-utils": "^0.3.7",
-    "openai": "^4.58.2",
-    "vue": "^3.4.38",
-    "vue-router": "^4.4.3"
+    "nuxt": "^3.13.1",
+    "nuxt-auth-utils": "^0.3.8",
+    "openai": "^4.59.0",
+    "vue": "^3.3.4",
+    "vue-router": "^4.4.4"
   },
   "devDependencies": {
-    "@nuxt/eslint-config": "^0.5.5",
-    "eslint": "^9.9.1",
-    "vue-tsc": "^2.1.4",
-    "wrangler": "^3.73.0"
+    "@nuxt/eslint-config": "^0.5.7",
+    "eslint": "^9.10.0",
+    "vue-tsc": "^2.1.6",
+    "wrangler": "^3.76.0"
   },
   "packageManager": "pnpm@9.9.0"
 }
