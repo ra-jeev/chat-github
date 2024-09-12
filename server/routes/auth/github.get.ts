@@ -1,14 +1,17 @@
 export default oauthGitHubEventHandler({
-  config: {
-    emailRequired: true,
-  },
-  async onSuccess(event, { user, tokens }) {
-    console.log('on success called with', user, tokens);
+  async onSuccess(event, { user }) {
     await setUserSession(event, {
-      user,
+      user: {
+        id: user.id,
+        login: user.login,
+        name: user.name,
+        avatarUrl: user.avatar_url,
+        htmlUrl: user.html_url,
+        publicRepos: user.public_repos,
+      },
     });
 
-    return sendRedirect(event, '/');
+    return sendRedirect(event, '/chat');
   },
   // Optional, will return a json error and 401 status code by default
   onError(event, error) {
