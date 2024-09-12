@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-full bg-gray-50 dark:bg-gray-950">
+  <div class="flex flex-col h-full">
     <div ref="chatContainer" class="flex-1 overflow-y-auto p-4 space-y-5">
       <div
         v-for="(message, index) in messages"
