@@ -60,7 +60,7 @@ export default defineEventHandler(async (event) => {
   ];
 
   try {
-    const llmResponse = await handleMessageWithOpenAI(llmMessages);
+    const llmResponse = await handleMessageWithOpenAI(event, llmMessages);
 
     return { role: 'assistant', id: useId(), content: llmResponse ?? '' };
   } catch (error) {

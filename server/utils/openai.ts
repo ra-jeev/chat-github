@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import type { H3Event } from 'h3';
 
 let _openai: OpenAI;
 export function useOpenAI() {
@@ -12,6 +13,7 @@ export function useOpenAI() {
 }
 
 export const handleMessageWithOpenAI = async (
+  event: H3Event,
   messages: OpenAI.Chat.ChatCompletionMessageParam[]
 ) => {
   const tools: OpenAI.Chat.ChatCompletionTool[] = [
@@ -73,9 +75,16 @@ export const handleMessageWithOpenAI = async (
       const functionName = toolCall.function.name;
       if (functionName === 'searchGithub') {
         const functionArgs = JSON.parse(toolCall.function.arguments);
-        const functionResponse = await searchGithub(functionArgs.endpoint, {
-          ...functionArgs,
-        });
+        const functionResponse = await searchGithub(
+          event,
+          functionArgs.endpoint,
+          {
+            q: functionArgs.q,
+            sort: functionArgs.sort,
+            order: functionArgs.order,
+            per_page: functionArgs.per_page,
+          }
+        );
 
         messages.push({
           tool_call_id: toolCall.id,
