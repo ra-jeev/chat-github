@@ -3,9 +3,9 @@ declare module '#auth-utils' {
     id: number;
     login: string;
     name: string;
-    avatar_url: string;
-    html_url: string;
-    public_repos: number;
+    avatarUrl: string;
+    htmlUrl: string;
+    publicRepos: number;
   }
 }
 
