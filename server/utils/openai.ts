@@ -28,7 +28,10 @@ export const handleMessageWithOpenAI = async (
               type: 'string',
               description: `The specific search endpoint to use. One of ['commits', 'issues', 'repositories', 'users']`,
             },
-            q: { type: 'string', description: 'the search query' },
+            q: {
+              type: 'string',
+              description: 'the search query using applicable qualifiers',
+            },
             sort: {
               type: 'string',
               description: 'The sort field (optional, depends on the endpoint)',
@@ -50,7 +53,7 @@ export const handleMessageWithOpenAI = async (
     },
   ];
 
-  const MODEL = 'gpt-4o';
+  const MODEL = 'gpt-4o-2024-08-06'; // the latest gpt-4o version
   const openai = useOpenAI();
   const response = await openai.chat.completions.create({
     model: MODEL,

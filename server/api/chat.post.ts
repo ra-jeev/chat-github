@@ -37,7 +37,7 @@ For example, If the user wants to find the top 5 most starred JavaScript reposit
   "per_page": 5
 }
 
-Then, summarize the results for the user in a clear and concise manner. Use markdown formatting and include the relevant GitHub link as per the user input.`;
+Then, summarize the results for the user in a clear and concise manner (use markdown if needed).`;
 
 export default defineEventHandler(async (event) => {
   const userSession = await requireUserSession(event);
