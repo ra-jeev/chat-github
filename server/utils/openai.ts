@@ -2,7 +2,7 @@ import OpenAI from 'openai';
 import type { H3Event } from 'h3';
 
 let _openai: OpenAI;
-export function useOpenAI() {
+function useOpenAI() {
   if (!_openai) {
     _openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,

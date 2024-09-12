@@ -1,9 +1,9 @@
 <template>
-  <div class="h-screen flex flex-col">
+  <div class="h-dvh flex flex-col">
     <AppHeader hide-clear />
-    <UContainer class="flex-1 w-full py-4">
+    <div class="flex-1 overflow-hidden">
       <ChatPanel />
-    </UContainer>
+    </div>
   </div>
 </template>
 

@@ -1,47 +1,57 @@
 <template>
   <div class="flex flex-col h-full">
-    <div ref="chatContainer" class="flex-1 overflow-y-auto p-4 space-y-5">
+    <div ref="chatContainer" class="flex-1 overflow-y-auto">
       <div
-        v-for="(message, index) in messages"
-        :key="`message-${index}`"
-        class="flex items-start gap-x-4"
+        class="max-w-4xl mx-auto border-x border-gray-200 dark:border-gray-800 p-4 space-y-5"
       >
         <div
-          class="w-12 h-12 p-2 rounded-full"
-          :class="`${
-            message.role === 'user' ? 'bg-primary/20' : 'bg-blue-500/20'
-          }`"
+          v-for="message in messages"
+          :key="message.id"
+          :class="[
+            'flex items-start gap-x-4 p-4 rounded-lg',
+            message.role === 'assistant' && 'bg-gray-50/60 dark:bg-gray-800/60',
+          ]"
         >
-          <UIcon
-            :name="`${
-              message.role === 'user'
-                ? 'i-heroicons-user-16-solid'
-                : 'i-heroicons-sparkles-solid'
-            }`"
-            class="w-8 h-8"
+          <div
+            class="w-12 h-12 p-2 rounded-full"
             :class="`${
-              message.role === 'user' ? 'text-primary-400' : 'text-blue-400'
+              message.role === 'user' ? 'bg-primary/20' : 'bg-blue-500/20'
             }`"
+          >
+            <UIcon
+              :name="`${
+                message.role === 'user'
+                  ? 'i-heroicons-user-16-solid'
+                  : 'i-heroicons-sparkles-solid'
+              }`"
+              class="w-8 h-8"
+              :class="`${
+                message.role === 'user' ? 'text-primary-400' : 'text-blue-400'
+              }`"
+            />
+          </div>
+          <div v-if="message.role === 'user'">
+            {{ message.content }}
+          </div>
+          <MDC
+            v-else
+            :value="message.content"
+            class="flex-1 prose dark:prose-invert"
           />
         </div>
-        <div v-if="message.role === 'user'">
-          {{ message.content }}
-        </div>
-        <MDC
-          v-else
-          :value="message.content"
-          class="flex-1 prose dark:prose-invert"
-        />
+        <ChatLoadingSkeleton v-if="loading" />
       </div>
-      <ChatLoadingSkeleton v-if="loading" />
     </div>
     <UDivider />
-    <div class="flex items-start p-3.5 relative">
+    <div class="flex items-start p-3.5 relative w-full max-w-4xl mx-auto">
       <UTextarea
         v-model="userMessage"
         placeholder="How can I help you today?"
         class="w-full"
-        :ui="{ padding: { xl: 'pr-11' } }"
+        :ui="{
+          padding: { xl: 'pr-11' },
+          base: '!ring-primary-500 dark:!ring-primary-400',
+        }"
         :rows="1"
         :maxrows="5"
         :disabled="loading"
@@ -103,7 +113,11 @@ const sendMessage = async () => {
   const tmpMessage = userMessage.value;
   try {
     userMessage.value = '';
-    messages.value.push({ role: 'user', id: useId(), content: tmpMessage });
+    messages.value.push({
+      role: 'user',
+      id: String(Date.now()),
+      content: tmpMessage,
+    });
     const res = await $fetch('/api/chat', {
       method: 'POST',
       body: {
@@ -112,7 +126,14 @@ const sendMessage = async () => {
     });
 
     if (res) {
-      messages.value.push(res);
+      messages.value.push({
+        role: 'assistant',
+        id: String(Date.now()),
+        content: res,
+      });
+    } else {
+      messages.value.pop();
+      userMessage.value = tmpMessage;
     }
   } catch (error) {
     console.error(error);

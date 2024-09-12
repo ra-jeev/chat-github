@@ -3,7 +3,7 @@ import type { H3Event } from 'h3';
 
 let _octokit: Octokit;
 
-export function useOctokit() {
+function useOctokit() {
   if (!_octokit) {
     _octokit = new Octokit({
       auth: process.env.NUXT_GITHUB_TOKEN,
@@ -59,6 +59,10 @@ export const searchGithub = defineCachedFunction(
       return response.data;
     } catch (error) {
       console.error(error);
+      throw createError({
+        statusCode: 500,
+        message: 'Error searching GitHub',
+      });
     }
   },
   {
@@ -74,11 +78,3 @@ export const searchGithub = defineCachedFunction(
       }:${params.sort ? 'sort:' + params.sort : ''}`,
   }
 );
-
-// tryGithub(
-//   allowedEndpoints.issues,
-//   'is:pr author:ra-jeev',
-//   'asc',
-//   'updated',
-//   1
-// ).then((data: any) => console.log(JSON.stringify(data, null, 2)));
