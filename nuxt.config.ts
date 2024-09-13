@@ -16,6 +16,7 @@ export default defineNuxtConfig({
   // https://hub.nuxt.com/docs/getting-started/installation#options
   hub: {
     ai: true,
+    cache: true,
   },
 
   // https://eslint.nuxt.com
