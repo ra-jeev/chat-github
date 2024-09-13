@@ -8,7 +8,15 @@
 </template>
 
 <script setup lang="ts">
+const { loggedIn } = useUserSession();
+
 definePageMeta({
   middleware: 'auth',
+});
+
+watchEffect(() => {
+  if (!loggedIn.value) {
+    navigateTo('/');
+  }
 });
 </script>
