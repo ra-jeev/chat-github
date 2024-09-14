@@ -1,7 +1,8 @@
 import { Groq } from 'groq-sdk';
+import type { H3Event } from 'h3';
 
 let _groq: Groq;
-export function useGroq() {
+function useGroq() {
   if (!_groq) {
     _groq = new Groq({
       apiKey: process.env.GROQ_API_KEY,
@@ -12,6 +13,7 @@ export function useGroq() {
 }
 
 export async function handleMessageWithGroq(
+  event: H3Event,
   messages: Groq.Chat.ChatCompletionMessageParam[]
 ) {
   const tools: Groq.Chat.ChatCompletionTool[] = [
@@ -19,7 +21,8 @@ export async function handleMessageWithGroq(
       type: 'function',
       function: {
         name: 'searchGithub',
-        description: 'Searches GitHub for information using the GitHub API',
+        description:
+          'Searches GitHub for information using the GitHub API. Call this if you need to find information on GitHub.',
         parameters: {
           type: 'object',
           properties: {
@@ -27,7 +30,10 @@ export async function handleMessageWithGroq(
               type: 'string',
               description: `The specific search endpoint to use. One of ['commits', 'issues', 'repositories', 'users']`,
             },
-            q: { type: 'string', description: 'the search query' },
+            q: {
+              type: 'string',
+              description: 'the search query using applicable qualifiers',
+            },
             sort: {
               type: 'string',
               description: 'The sort field (optional, depends on the endpoint)',
@@ -71,9 +77,16 @@ export async function handleMessageWithGroq(
       const functionName = toolCall.function.name;
       if (functionName === 'searchGithub') {
         const functionArgs = JSON.parse(toolCall.function.arguments);
-        const functionResponse = await searchGithub(functionArgs.endpoint, {
-          ...functionArgs,
-        });
+        const functionResponse = await searchGithub(
+          event,
+          functionArgs.endpoint,
+          {
+            q: functionArgs.q,
+            sort: functionArgs.sort,
+            order: functionArgs.order,
+            per_page: functionArgs.per_page,
+          }
+        );
 
         messages.push({
           tool_call_id: toolCall.id,
