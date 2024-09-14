@@ -1,5 +1,5 @@
+import type { H3Event } from 'h3';
 import type { AiTextGenerationInput } from '@cloudflare/workers-types/experimental';
-import type { SearchParams } from './github';
 
 type ResultType = {
   response?: string;
@@ -10,9 +10,11 @@ type ResultType = {
 };
 
 export const handleMessageWithHubAI = async (
+  event: H3Event,
   messages: {
     role: 'system' | 'user' | 'assistant' | 'tool';
     name?: string;
+    tool_call?: string;
     content: string;
   }[]
 ) => {
@@ -21,7 +23,8 @@ export const handleMessageWithHubAI = async (
       type: 'function',
       function: {
         name: 'searchGithub',
-        description: 'Searches GitHub for information using the GitHub API',
+        description:
+          'Searches GitHub for information using the GitHub API. Call this if you need to find information on GitHub.',
         parameters: {
           type: 'object',
           properties: {
@@ -29,7 +32,10 @@ export const handleMessageWithHubAI = async (
               type: 'string',
               description: `The specific search endpoint to use. One of ['commits', 'issues', 'repositories', 'users']`,
             },
-            q: { type: 'string', description: 'the search query' },
+            q: {
+              type: 'string',
+              description: 'the search query using applicable qualifiers',
+            },
             sort: {
               type: 'string',
               description: 'The sort field (optional, depends on the endpoint)',
@@ -58,17 +64,30 @@ export const handleMessageWithHubAI = async (
     tools,
   } as AiTextGenerationInput)) as ResultType;
 
-  console.log('initial response:', result);
+  console.log('hubAI:: initial response:', result);
 
   if (result.tool_calls) {
+    messages.push({
+      role: 'assistant',
+      tool_call: result.tool_calls[0].name,
+      content: '',
+    });
+
     for (const tool_call of result.tool_calls) {
       console.log('taking tool call', tool_call);
       if (tool_call.name === 'searchGithub') {
         const functionArgs = tool_call.arguments as SearchParams;
 
-        const functionResponse = await searchGithub(functionArgs.endpoint, {
-          ...functionArgs,
-        });
+        const functionResponse = await searchGithub(
+          event,
+          functionArgs.endpoint,
+          {
+            q: functionArgs.q,
+            sort: functionArgs.sort,
+            order: functionArgs.order,
+            per_page: functionArgs.per_page,
+          }
+        );
 
         messages.push({
           role: 'tool',
@@ -83,7 +102,7 @@ export const handleMessageWithHubAI = async (
       tools,
     } as AiTextGenerationInput)) as ResultType;
 
-    console.log('final Response:: ', secondResponse);
+    console.log('hubAI:: final Response:: ', secondResponse);
 
     return secondResponse.response;
   }
