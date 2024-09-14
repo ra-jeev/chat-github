@@ -20,15 +20,15 @@
     "groq-sdk": "^0.7.0",
     "nuxt": "^3.13.1",
     "nuxt-auth-utils": "^0.3.8",
-    "openai": "^4.60.0",
-    "vue": "^3.5.4",
+    "openai": "^4.61.0",
+    "vue": "^3.5.5",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^0.5.7",
     "eslint": "^9.10.0",
     "vue-tsc": "^2.1.6",
-    "wrangler": "^3.77.0"
+    "wrangler": "^3.78.2"
   },
   "packageManager": "pnpm@9.9.0"
 }
