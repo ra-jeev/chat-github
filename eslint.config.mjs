@@ -5,4 +5,5 @@ export default withNuxt().overrideRules({
   // Your custom configs here
   'vue/max-attributes-per-line': ['warn', { singleline: 3 }],
   'vue/singleline-html-element-content-newline': ['off'],
+  '@stylistic/operator-linebreak': ['error', 'after'],
 });

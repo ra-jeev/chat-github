@@ -2,7 +2,7 @@
   <div class="flex flex-col h-full">
     <div ref="chatContainer" class="flex-1 overflow-y-auto">
       <div
-        class="max-w-4xl mx-auto border-x border-gray-200 dark:border-gray-800 p-4 space-y-5"
+        class="max-w-4xl mx-auto min-h-full border-x border-gray-200 dark:border-gray-800 p-4 space-y-2"
       >
         <div
           v-for="message in messages"
@@ -39,7 +39,7 @@
             class="flex-1 prose dark:prose-invert"
           />
         </div>
-        <ChatLoadingSkeleton v-if="loading" />
+        <ChatLoadingSkeleton v-if="loading" class="p-4" />
       </div>
     </div>
     <UDivider />
@@ -72,11 +72,7 @@
 </template>
 
 <script setup lang="ts">
-type Message = {
-  id?: string;
-  role: string;
-  content: string;
-};
+import type { Message } from '~~/types';
 
 const messages = ref<Message[]>([]);
 const loading = ref(false);
@@ -118,29 +114,31 @@ const sendMessage = async () => {
       id: String(Date.now()),
       content: tmpMessage,
     });
-    const res = await $fetch('/api/chat', {
-      method: 'POST',
-      body: {
-        messages: messages.value,
-      },
-    });
 
-    if (res) {
-      messages.value.push({
-        role: 'assistant',
-        id: String(Date.now()),
-        content: res,
-      });
-    } else {
-      messages.value.pop();
-      userMessage.value = tmpMessage;
+    const response = useChat('/api/chat', { messages: messages.value })();
+
+    let responseAdded = false;
+    for await (const chunk of response) {
+      if (responseAdded) {
+        // add the chunk to the current message's content
+        messages.value[messages.value.length - 1]!.content += chunk;
+      } else {
+        // add a new message to the chat history
+        messages.value.push({
+          role: 'assistant',
+          id: String(Date.now()),
+          content: chunk,
+        });
+
+        responseAdded = true;
+        loading.value = false;
+      }
     }
   } catch (error) {
     console.error(error);
     messages.value.pop();
     userMessage.value = tmpMessage;
+    loading.value = false;
   }
-
-  loading.value = false;
 };
 </script>
