@@ -4,41 +4,18 @@
       <div
         class="max-w-4xl mx-auto min-h-full border-x border-gray-200 dark:border-gray-800 p-4 space-y-2"
       >
-        <div
-          v-for="message in messages"
-          :key="message.id"
-          :class="[
-            'flex items-start gap-x-4 p-4 rounded-lg',
-            message.role === 'assistant' && 'bg-gray-50/60 dark:bg-gray-800/60',
-          ]"
-        >
-          <div
-            class="w-12 h-12 p-2 rounded-full"
-            :class="`${
-              message.role === 'user' ? 'bg-primary/20' : 'bg-blue-500/20'
-            }`"
-          >
-            <UIcon
-              :name="`${
-                message.role === 'user'
-                  ? 'i-heroicons-user-16-solid'
-                  : 'i-heroicons-sparkles-solid'
-              }`"
-              class="w-8 h-8"
-              :class="`${
-                message.role === 'user' ? 'text-primary-400' : 'text-blue-400'
-              }`"
-            />
-          </div>
-          <div v-if="message.role === 'user'">
-            {{ message.content }}
-          </div>
+        <template v-for="message in messages" :key="message.id">
+          <UserMessage
+            v-if="message.role === 'user'"
+            :content="message.content"
+          />
+
           <AssistantMessage
             v-else
             :content="message.content"
             :message-id="message.id"
           />
-        </div>
+        </template>
         <ChatLoadingSkeleton v-if="loading" class="p-4" />
       </div>
     </div>

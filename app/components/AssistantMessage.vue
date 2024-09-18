@@ -1,9 +1,16 @@
 <template>
-  <MDCRenderer
-    v-if="ast"
-    class="flex-1 prose dark:prose-invert"
-    :body="ast.body"
-  />
+  <div
+    class="flex items-start gap-x-4 p-4 rounded-lg bg-gray-50/60 dark:bg-gray-800/60"
+  >
+    <div class="w-12 h-12 p-2 rounded-full bg-blue-500/25">
+      <UIcon name="i-heroicons-sparkles-solid" class="w-8 h-8 text-blue-500" />
+    </div>
+    <MDCRenderer
+      v-if="ast"
+      class="flex-1 prose dark:prose-invert"
+      :body="ast.body"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
