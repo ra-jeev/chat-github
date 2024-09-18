@@ -33,10 +33,10 @@
           <div v-if="message.role === 'user'">
             {{ message.content }}
           </div>
-          <MDC
+          <AssistantMessage
             v-else
-            :value="message.content"
-            class="flex-1 prose dark:prose-invert"
+            :content="message.content"
+            :message-id="message.id"
           />
         </div>
         <ChatLoadingSkeleton v-if="loading" class="p-4" />
