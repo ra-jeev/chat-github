@@ -3,6 +3,9 @@
     <div ref="chatContainer" class="flex-1 overflow-y-auto">
       <div
         class="max-w-4xl mx-auto min-h-full border-x border-gray-200 dark:border-gray-800 p-4 space-y-2"
+        :class="{
+          'flex items-center justify-center': messages.length === 0,
+        }"
       >
         <template v-for="message in messages" :key="message.id">
           <UserMessage
@@ -17,6 +20,7 @@
           />
         </template>
         <ChatLoadingSkeleton v-if="loading" class="p-4" />
+        <NoChats v-if="messages.length === 0" @query-select="onQuerySelect" />
       </div>
     </div>
     <UDivider />
@@ -78,6 +82,11 @@ onUnmounted(() => {
     observer.disconnect();
   }
 });
+
+const onQuerySelect = (query: string) => {
+  userMessage.value = query;
+  sendMessage();
+};
 
 const sendMessage = async () => {
   if (!userMessage.value.trim()) return;
