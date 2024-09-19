@@ -2,9 +2,11 @@
   <div
     class="flex items-start gap-x-4 p-4 rounded-lg bg-gray-50/60 dark:bg-gray-800/60"
   >
-    <div class="w-12 h-12 p-2 rounded-full bg-blue-500/25">
-      <UIcon name="i-heroicons-sparkles-solid" class="w-8 h-8 text-blue-500" />
-    </div>
+    <UIcon
+      name="i-simple-icons-github"
+      class="w-10 h-10 text-gray-700 dark:text-gray-300"
+    />
+
     <MDCRenderer
       v-if="ast"
       class="flex-1 prose dark:prose-invert"
