@@ -1,36 +1,46 @@
 <template>
-  <div class="min-h-screen">
+  <div class="h-screen flex flex-col">
     <AppHeader />
-    <div
-      class="flex flex-col items-center gap-y-6 py-12 w-full max-w-xl mx-auto"
+
+    <main
+      class="flex-grow flex flex-col justify-center items-center bg-gradient-to-t from-primary-500/20"
     >
-      <h1 class="text-xl lg:text-2xl">Welcome to Chat GitHub</h1>
+      <div class="max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6">
+          GitHub Search With <br />
+          <span class="text-primary">Chat Interface</span>
+        </h1>
+        <p class="text-lg sm:text-xl text-gray-700 dark:text-gray-300 mb-16">
+          No more haggling with creating the correct query parameters. Just ype
+          in the chat what you're looking for in natural language.
+        </p>
+        <AuthState v-slot="{ loggedIn }">
+          <UButton
+            v-if="loggedIn"
+            size="lg"
+            trailing-icon="i-heroicons-arrow-right-16-solid"
+            to="/chat"
+          >
+            Go to Chat
+          </UButton>
 
-      <div>
-        <AuthState v-slot="{ user, loggedIn, clear }">
-          <div v-if="loggedIn" class="space-y-12 text-center">
-            <h2>
-              Logged in as {{ user?.login }}
-              <UButton class="ml-2" color="black" @click="clear">
-                Logout
-              </UButton>
-            </h2>
-
-            <UButton size="lg" to="/chat"> Start Chatting </UButton>
-          </div>
-          <div v-else class="space-y-6">
-            <h2>Sign in to chat with GitHub</h2>
+          <div v-else class="flex items-center justify-center gap-x-4">
             <UButton
               size="lg"
               icon="i-simple-icons-github"
               to="/auth/github"
               external
             >
-              Sign In With GitHub
+              Sign in with GitHub
             </UButton>
+            <p class="text-sm text-gray-600 dark:text-gray-300 text-center">
+              Start Chatting Now!
+            </p>
           </div>
         </AuthState>
       </div>
-    </div>
+    </main>
+
+    <AppFooter />
   </div>
 </template>
