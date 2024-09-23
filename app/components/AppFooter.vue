@@ -1,8 +1,14 @@
 <template>
-  <footer class="border-t -mt-px border-gray-200 dark:border-gray-800">
+  <footer>
     <UContainer class="flex justify-center items-center gap-x-4 h-14">
       <p>Made with ❤️ by Rajeev</p>
-      <UDivider orientation="vertical" class="h-6" />
+      <UDivider
+        orientation="vertical"
+        class="h-6"
+        :ui="{
+          border: { base: 'border-primary-300 dark:border-primary-600' },
+        }"
+      />
       <div class="flex gap-x-2 justify-center">
         <UButton
           v-for="social in socials"
@@ -25,11 +31,6 @@ const socials = [
     name: 'x',
     icon: 'i-simple-icons-x',
     to: 'https://twitter.com/ra_jeeves',
-  },
-  {
-    name: 'github',
-    icon: 'i-simple-icons-github',
-    to: 'https://github.com/ra-jeev',
   },
 ];
 </script>
