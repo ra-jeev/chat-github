@@ -17,6 +17,7 @@ export default defineNuxtConfig({
   hub: {
     ai: true,
     cache: true,
+    database: true,
   },
 
   // https://eslint.nuxt.com
