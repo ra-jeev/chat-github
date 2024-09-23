@@ -17,5 +17,7 @@ export default defineEventHandler(async (event) => {
     ...messages,
   ];
 
-  return asyncGeneratorToStream(handleMessageWithOpenAI(event, llmMessages));
+  return asyncGeneratorToStream(
+    handleMessageWithOpenAI(event, llmMessages, userSession.user.login)
+  );
 });

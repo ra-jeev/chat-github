@@ -54,7 +54,8 @@ function useOpenAI() {
 
 export const handleMessageWithOpenAI = async function* (
   event: H3Event,
-  messages: OpenAI.ChatCompletionMessageParam[]
+  messages: OpenAI.ChatCompletionMessageParam[],
+  loggedInUser: string
 ) {
   const openai = useOpenAI();
   const responseStream = await openai.chat.completions.create({
@@ -96,6 +97,8 @@ export const handleMessageWithOpenAI = async function* (
     }
 
     if (choice.finish_reason === 'tool_calls') {
+      const userMessage = messages[messages.length - 1].content as string;
+
       messages.push({
         role: 'assistant',
         tool_calls: currentToolCalls,
@@ -115,6 +118,8 @@ export const handleMessageWithOpenAI = async function* (
                 per_page: functionArgs.per_page,
               }
             );
+
+            await saveUserQuery(loggedInUser, userMessage, functionArgs.q);
 
             messages.push({
               role: 'tool',
