@@ -72,9 +72,12 @@ export const searchGithub = defineCachedFunction(
       event: H3Event,
       endpoint: string,
       params: Omit<SearchParams, 'endpoint'>
-    ) =>
-      `${endpoint}:q:${params.q}:per_page:${params.per_page}${
-        params.order ? 'order:' + params.order : ''
-      }:${params.sort ? 'sort:' + params.sort : ''}`,
+    ) => {
+      const q = params.q.toLowerCase().split(' ').sort();
+
+      return `${endpoint}:q:${q.join(' ')}}:per_page:${params.per_page}${
+        params.order ? ':order:' + params.order : ''
+      }${params.sort ? ':sort:' + params.sort : ''}`;
+    },
   }
 );
