@@ -5,12 +5,13 @@
     <main class="flex-grow flex flex-col justify-center items-center">
       <div class="max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6">
-          GitHub Search With <br />
-          <span class="text-primary">Chat Interface</span>
+          <span class="text-primary">Search GitHub</span>
+          <br />
+          in Plain English
         </h1>
         <p class="text-lg sm:text-xl text-gray-700 dark:text-gray-300 mb-12">
-          No more haggling with creating the correct query parameters. Just ype
-          in the chat what you're looking for in natural language.
+          Forget complex query syntax. Simply describe what you're looking for
+          in everyday language, and let AI-powered search do the heavy lifting.
         </p>
         <AuthState v-slot="{ loggedIn }">
           <UButton
