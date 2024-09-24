@@ -53,3 +53,23 @@ const storeQuery = async (
     console.error('Failed to store query: ', error);
   }
 };
+
+export const getTrendingUsers = async () => {
+  const db = hubDatabase();
+  const result = await db
+    .prepare('SELECT * FROM trending_users ORDER BY search_count DESC LIMIT ?')
+    .bind(10)
+    .all();
+
+  return result.results;
+};
+
+export const getRecentQueries = async () => {
+  const db = hubDatabase();
+  const result = await db
+    .prepare('SELECT * FROM queries ORDER BY queried_at DESC LIMIT ?')
+    .bind(10)
+    .all();
+
+  return result.results;
+};
