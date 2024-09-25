@@ -1,7 +1,7 @@
 <template>
   <div
-    :class="{ 'w-full max-w-72 h-56 overflow-hidden': expanded }"
-    class="bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg transition-all"
+    :class="{ 'w-full max-w-80 h-64 overflow-hidden': expanded }"
+    class="flex flex-col bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg transition-all"
   >
     <div
       class="px-3.5 py-2.5 cursor-pointer bg-primary/50 rounded-t-lg"
@@ -26,7 +26,7 @@
         />
       </h3>
     </div>
-    <div v-if="expanded" class="p-3.5">
+    <div v-if="expanded" class="flex-grow p-3.5 overflow-auto">
       <slot />
     </div>
   </div>
