@@ -2,7 +2,7 @@
   <div class="h-screen flex flex-col bg-gradient-to-t from-primary-500/20">
     <AppHeader />
 
-    <main class="flex-grow flex flex-col justify-center items-center">
+    <main class="flex-grow flex flex-col justify-center items-center relative">
       <div class="max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6">
           <span class="text-primary">Search GitHub</span>
@@ -44,6 +44,28 @@
             Supports /issues, /commits, /users & /repositories
           </div>
         </div>
+      </div>
+
+      <div class="absolute inset-x-0 bottom-0">
+        <UContainer class="flex justify-between items-end">
+          <ExpandablePanel
+            title="Trending Users"
+            title-icon="i-heroicons-arrow-trending-up-16-solid"
+            expand-direction="right"
+          >
+            <TrendingUsers />
+          </ExpandablePanel>
+
+          <ExpandablePanel
+            title="Recent Queries"
+            title-icon="i-heroicons-clock-solid"
+            expand-direction="left"
+            max-expanded-width="max-w-96"
+            expanded-height="h-72"
+          >
+            <RecentQueries />
+          </ExpandablePanel>
+        </UContainer>
       </div>
     </main>
 
