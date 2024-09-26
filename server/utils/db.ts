@@ -1,51 +1,105 @@
+import type {
+  RecentQuery,
+  ToolCallDetails,
+  TrendingUser,
+  UserQuery,
+} from '~~/types';
+
+const getAvatarUrl = (toolCall: ToolCallDetails) => {
+  let avatarUrl;
+  const responseItem = toolCall.response.items[0];
+
+  if (responseItem) {
+    if (responseItem.author) {
+      avatarUrl = responseItem.author.avatar_url;
+    } else if (responseItem.user) {
+      avatarUrl = responseItem.user.avatar_url;
+    } else if (responseItem.owner) {
+      avatarUrl = responseItem.owner.avatar_url;
+    } else if (responseItem.avatar_url) {
+      avatarUrl = responseItem.avatar_url;
+    }
+  }
+
+  return avatarUrl;
+};
+
+const shouldSaveUserQuery = (
+  toolCall: ToolCallDetails,
+  loggedInUser: string
+) => {
+  const responseItem = toolCall.response.items[0];
+  if (
+    responseItem &&
+    ((responseItem.author && responseItem.author.login === loggedInUser) ||
+      (responseItem.user && responseItem.user.login === loggedInUser) ||
+      (responseItem.owner && responseItem.owner.login === loggedInUser) ||
+      responseItem.login === loggedInUser)
+  ) {
+    return false;
+  }
+
+  return true;
+};
+
 export const saveUserQuery = async (
   loggedInUser: string,
-  queryText: string,
-  githubQuery: string
+  userQuery: UserQuery
 ) => {
-  let queriedUser;
-  if (githubQuery.includes('author:')) {
-    queriedUser = githubQuery.split('author:')[1].split(' ')[0];
-  } else if (githubQuery.includes('user:')) {
-    queriedUser = githubQuery.split('user:')[1].split(' ')[0];
-  }
+  const toolCall = userQuery.toolCalls[0];
+  const matchedUser = toolCall.request.q.match(/(?:author:|user:)(\S+)/);
+  if (matchedUser) {
+    const queriedUser = matchedUser[1].toLowerCase();
+    if (queriedUser !== loggedInUser) {
+      const avatarUrl = getAvatarUrl(toolCall);
 
-  if (queriedUser && queriedUser.toLowerCase() !== loggedInUser) {
-    return await storeQuery(queryText, queriedUser);
-  }
-
-  if (githubQuery.includes('repo:')) {
-    const queriedRepo = githubQuery.split('repo:')[1].split(' ')[0];
-    await storeQuery(queryText, queriedRepo);
+      await storeQuery(
+        userQuery.userMessage,
+        userQuery.assistantReply,
+        toolCall,
+        { login: queriedUser, avatarUrl }
+      );
+    }
+  } else if (shouldSaveUserQuery(toolCall, loggedInUser)) {
+    await storeQuery(userQuery.userMessage, userQuery.assistantReply, toolCall);
   }
 };
 
 const storeQuery = async (
   queryText: string,
-  queriedUser?: string,
-  queriedRepo?: string
+  assistantReply: string,
+  toolCall: ToolCallDetails,
+  queriedUser?: { login: string; avatarUrl?: string }
 ) => {
   try {
     const db = hubDatabase();
 
+    const queryStmt = db
+      .prepare(
+        'INSERT INTO queries (text, response, github_request, github_response) VALUES (?1, ?2, ?3, ?4)'
+      )
+      .bind(
+        queryText,
+        assistantReply,
+        JSON.stringify(toolCall.request),
+        JSON.stringify(toolCall.response)
+      );
     if (queriedUser) {
       const [batchRes1, batchRes2] = await db.batch([
-        db
-          .prepare('INSERT INTO queries (text, queried_entity) VALUES (?1, ?2)')
-          .bind(queryText, queriedUser),
+        queryStmt,
         db
           .prepare(
-            'INSERT INTO trending_users (username, search_count, last_searched) VALUES (?, 1, CURRENT_TIMESTAMP) ON CONFLICT(username) DO UPDATE SET search_count = search_count + 1, last_searched = CURRENT_TIMESTAMP'
+            `INSERT INTO trending_users (username, search_count, last_searched, avatar_url)
+              VALUES (?1, 1, CURRENT_TIMESTAMP, ?2)
+              ON CONFLICT(username)
+              DO UPDATE SET search_count = search_count + 1, last_searched = CURRENT_TIMESTAMP, avatar_url = COALESCE(?2, avatar_url)`
           )
-          .bind(queriedUser),
+          .bind(queriedUser.login, queriedUser.avatarUrl),
       ]);
 
       console.log('storeQuery: ', batchRes1, batchRes2);
-    } else if (queriedRepo) {
-      const res = await db
-        .prepare('INSERT INTO queries (text, queried_entity) VALUES (?1, ?2)')
-        .bind(queryText, queriedRepo)
-        .run();
+    } else {
+      const res = await queryStmt.run();
 
       console.log('storeQuery: ', res);
     }
@@ -59,17 +113,21 @@ export const getTrendingUsers = async () => {
   const result = await db
     .prepare('SELECT * FROM trending_users ORDER BY search_count DESC LIMIT ?')
     .bind(10)
-    .all();
+    .all<TrendingUser>();
 
   return result.results;
 };
 
 export const getRecentQueries = async () => {
   const db = hubDatabase();
+  console.log('getRecentQueries');
   const result = await db
-    .prepare('SELECT * FROM queries ORDER BY queried_at DESC LIMIT ?')
+    .prepare(
+      'SELECT id, text, response, queried_at FROM queries ORDER BY queried_at DESC LIMIT ?'
+    )
     .bind(10)
-    .all();
+    .all<RecentQuery>();
 
+  console.log('getRecentQueries: ', result);
   return result.results;
 };
