@@ -1,7 +1,10 @@
 <template>
   <div
-    :class="{ 'w-full max-w-80 h-64 overflow-hidden': expanded }"
-    class="flex flex-col bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg transition-all"
+    :class="[
+      expanded &&
+        `w-full ${maxExpandedWidth} ${expandedHeight} overflow-hidden`,
+      'flex flex-col bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg transition-all',
+    ]"
   >
     <div
       class="px-3.5 py-2.5 cursor-pointer bg-primary/50 rounded-t-lg"
@@ -26,7 +29,7 @@
         />
       </h3>
     </div>
-    <div v-if="expanded" class="flex-grow p-3.5 overflow-auto">
+    <div v-if="expanded" class="flex-grow overflow-auto">
       <slot />
     </div>
   </div>
@@ -35,11 +38,20 @@
 <script setup lang="ts">
 const expanded = ref(false);
 
-const props = defineProps<{
-  title: string;
-  titleIcon: string;
-  expandDirection: 'left' | 'right';
-}>();
+const props = withDefaults(
+  defineProps<{
+    title: string;
+    titleIcon: string;
+    expandDirection: 'left' | 'right';
+    maxExpandedWidth?: string;
+    expandedHeight?: string;
+  }>(),
+  {
+    expandDirection: 'right',
+    maxExpandedWidth: 'max-w-80',
+    expandedHeight: 'h-64',
+  }
+);
 
 const expandIcon = computed(() => {
   /* eslint-disable @stylistic/operator-linebreak */
