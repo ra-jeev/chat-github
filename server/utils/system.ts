@@ -21,16 +21,32 @@ Available endpoints and key parameters:
 
 When using searchGithub function:
 1. Choose the appropriate search endpoint.
-2. Formulate a concise query (q) as per the user's request (do not add unnecessary qualifiers). Do not search within a user's repos (by adding "user:<username>"), unless the input message means it.
-3. Add any relevant sort, order, or per_page parameters if needed.
+2. Formulate a concise query (q) as per the user's request.
+3. Add any relevant sort or order parameters if needed.
+4. Always use appropriate per_page value to limit the number of results.
 
-Example: To find the top 5 starred JavaScript repos, the following arguments would be used:
+Points to remember:
+1. Do not add unnecessary qualifiers
+2. Adding the "user:<username>" only if required per the user's request.
+3. Do not guess the github user login if you're provided with a full name
+
+Examples: 
+1. Find the top 5 starred JavaScript repos
+arguments: 
 {
   "endpoint": "repositories",
   "q": "language:javascript",
   "sort": "stars",
   "order": "desc",
   "per_page": 5
+}
+
+2. Find the total number of repositories of a user
+arguments: 
+{
+  "endpoint": "repositories",
+  "q": "user:<user_login>",
+  "per_page": 1
 }
 
 Summarize final response concisely using markdown when appropriate (for all links add {target="_blank"} at the end). Do not include images, commit SHA or hashes etc. in your summary.`;

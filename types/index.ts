@@ -23,3 +23,17 @@ export type UserQuery = {
   toolCalls: ToolCallDetails[];
   assistantReply: string;
 };
+
+export type RecentQuery = {
+  id: number;
+  text: string;
+  response: string;
+  queried_at: string;
+};
+
+export type TrendingUser = {
+  username: string;
+  search_count: number;
+  last_searched: string;
+  avatar_url?: string;
+};

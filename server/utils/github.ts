@@ -29,13 +29,6 @@ export const searchGithub = defineCachedFunction(
     endpoint: string,
     params: Omit<SearchParams, 'endpoint'>
   ) => {
-    console.log(
-      'incoming searchGitHub request for endpoint',
-      endpoint,
-      'with params: ',
-      params
-    );
-
     if (!endpoint || !allowedEndpoints[endpoint as EndpointType]) {
       throw createError({
         statusCode: 404,
