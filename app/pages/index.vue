@@ -1,9 +1,9 @@
 <template>
-  <div class="h-screen flex flex-col bg-gradient-to-t from-primary-500/20">
+  <div class="min-h-screen flex flex-col bg-gradient-to-t from-primary-500/20">
     <AppHeader />
 
     <main class="flex-grow flex flex-col justify-center items-center relative">
-      <div class="w-full max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+      <div class="w-full max-w-3xl px-4 sm:px-6 lg:px-8 text-center py-16">
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6">
           <span class="text-primary">Search GitHub</span>
           <br />
@@ -46,12 +46,15 @@
         </div>
       </div>
 
-      <div class="absolute inset-x-0 bottom-0">
-        <UContainer class="flex justify-between items-end">
+      <div class="w-full px-1 sm:absolute inset-x-0 bottom-0">
+        <UContainer
+          class="flex flex-wrap justify-center sm:justify-between items-end min-h-12 relative"
+        >
           <ExpandablePanel
             title="Most Searched"
             title-icon="i-heroicons-arrow-trending-up-16-solid"
             expand-direction="right"
+            class="absolute bottom-11 sm:static"
           >
             <TrendingUsers />
           </ExpandablePanel>
@@ -62,6 +65,7 @@
             expand-direction="left"
             max-expanded-width="max-w-96"
             expanded-height="h-72"
+            class="absolute sm:static"
           >
             <RecentQueries />
           </ExpandablePanel>

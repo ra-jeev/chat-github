@@ -3,31 +3,39 @@
     :class="[
       expanded &&
         `w-full ${maxExpandedWidth} ${expandedHeight} overflow-hidden`,
-      'flex flex-col bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg transition-all',
+      'flex flex-col bg-white/85 dark:bg-gray-900/85 sm:bg-white/50 sm:dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg transition-all',
     ]"
   >
     <div
-      class="px-3.5 py-2.5 cursor-pointer bg-primary/50 rounded-t-lg"
+      class="flex items-center justify-between sm:text-lg font-medium gap-x-4 px-3.5 py-2.5 cursor-pointer bg-primary/70 sm:bg-primary/50 rounded-t-lg"
       :class="{ 'rounded-b-lg': !expanded }"
       @click="expanded = !expanded"
     >
-      <h3
-        class="flex items-center justify-between text-lg font-semibold gap-x-4"
-      >
-        <div class="flex items-center gap-x-2">
-          <UIcon
-            :name="titleIcon"
-            class="w-5 h-5 text-primary dark:text-primary-400"
-          />
-          {{ title }}
-        </div>
-        <UButton
-          color="black"
-          variant="ghost"
-          :padded="false"
-          :icon="expandIcon"
+      <h3 class="flex items-center gap-x-2">
+        <UIcon
+          :name="titleIcon"
+          class="w-5 h-5 text-primary-600 dark:text-primary-400 sm:text-primary sm:dark:text-primary shrink-0"
         />
+        {{ title }}
       </h3>
+      <UButton
+        class="hidden sm:inline-block"
+        color="black"
+        variant="ghost"
+        :padded="false"
+        :icon="expandIcon"
+      />
+      <UButton
+        class="sm:hidden"
+        color="black"
+        variant="ghost"
+        :padded="false"
+        :icon="
+          expanded
+            ? 'i-heroicons-arrow-down-20-solid'
+            : 'i-heroicons-arrow-up-20-solid'
+        "
+      />
     </div>
     <div v-if="expanded" class="flex-grow overflow-auto">
       <slot />
