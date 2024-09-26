@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import type { H3Event } from 'h3';
+import type { UserQuery } from '~~/types';
 
 const MODEL = 'gpt-4o-2024-08-06'; // the latest gpt-4o version
 const tools: OpenAI.ChatCompletionTool[] = [
@@ -97,7 +98,11 @@ export const handleMessageWithOpenAI = async function* (
     }
 
     if (choice.finish_reason === 'tool_calls') {
-      const userMessage = messages[messages.length - 1].content as string;
+      const queryToSave: UserQuery = {
+        userMessage: messages[messages.length - 1].content as string,
+        toolCalls: [],
+        assistantReply: '',
+      };
 
       messages.push({
         role: 'assistant',
@@ -119,7 +124,10 @@ export const handleMessageWithOpenAI = async function* (
               }
             );
 
-            await saveUserQuery(loggedInUser, userMessage, functionArgs.q);
+            queryToSave.toolCalls.push({
+              request: functionArgs,
+              response: toolResult,
+            });
 
             messages.push({
               role: 'tool',
@@ -140,10 +148,15 @@ export const handleMessageWithOpenAI = async function* (
 
       for await (const chunk of finalResponse) {
         if (chunk.choices[0].delta.content) {
+          queryToSave.assistantReply += chunk.choices[0].delta.content;
           yield `data: ${JSON.stringify({
             response: chunk.choices[0].delta.content,
           })}\n\n`;
         }
+      }
+
+      if (queryToSave.toolCalls.length) {
+        await saveUserQuery(loggedInUser, queryToSave);
       }
     }
   }
