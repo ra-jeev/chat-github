@@ -1,11 +1,6 @@
 export default defineNitroPlugin(() => {
-  // Only run migrations in development
   if (import.meta.dev) {
     onHubReady(async () => {
-      await hubDatabase().exec(
-        `DROP TABLE IF EXISTS queries;`.replace(/\n/g, '')
-      );
-
       await hubDatabase().exec(
         `CREATE TABLE IF NOT EXISTS queries (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
