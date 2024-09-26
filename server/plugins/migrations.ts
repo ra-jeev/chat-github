@@ -10,7 +10,9 @@ export default defineNitroPlugin(() => {
         `CREATE TABLE IF NOT EXISTS queries (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           text TEXT NOT NULL,
-          queried_entity TEXT NOT NULL,
+          response TEXT NOT NULL,
+          github_request TEXT NOT NULL,
+          github_response TEXT NOT NULL,
           queried_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
       `.replace(/\n/g, '')
@@ -24,6 +26,7 @@ export default defineNitroPlugin(() => {
       await hubDatabase().exec(
         `CREATE TABLE IF NOT EXISTS trending_users (
           username TEXT PRIMARY KEY,
+          avatar_url TEXT,
           search_count INTEGER NOT NULL,
           last_searched DATETIME DEFAULT CURRENT_TIMESTAMP
         );
