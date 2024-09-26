@@ -1,0 +1,23 @@
+<template>
+  <ul>
+    <li
+      v-for="user in trendingUsers"
+      :key="user.username"
+      class="flex items-center px-3.5 py-2.5 gap-x-3 rounded hover:bg-white/80 dark:hover:bg-gray-900/80"
+    >
+      <UAvatar :src="user.avatar_url" :alt="user.username" size="sm" />
+      <div>
+        <p class="text-sm font-medium">
+          {{ user.username }}
+        </p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          Searched {{ user.search_count }} times
+        </p>
+      </div>
+    </li>
+  </ul>
+</template>
+
+<script setup lang="ts">
+const { data: trendingUsers } = await useFetch('/api/trending-users');
+</script>
