@@ -1,5 +1,15 @@
 import { Octokit } from '@octokit/rest';
 import type { H3Event } from 'h3';
+import type { SearchParams } from '~~/types';
+
+const allowedEndpoints = {
+  commits: 'GET /search/commits',
+  issues: 'GET /search/issues',
+  repositories: 'GET /search/repositories',
+  users: 'GET /search/users',
+} as const;
+
+type EndpointType = keyof typeof allowedEndpoints;
 
 let _octokit: Octokit;
 
@@ -13,23 +23,6 @@ function useOctokit() {
   return _octokit;
 }
 
-const allowedEndpoints = {
-  commits: 'GET /search/commits',
-  issues: 'GET /search/issues',
-  repositories: 'GET /search/repositories',
-  users: 'GET /search/users',
-} as const;
-
-type EndpointType = keyof typeof allowedEndpoints;
-
-export type SearchParams = {
-  endpoint: string;
-  q: string;
-  order?: string;
-  sort?: string;
-  per_page: string;
-};
-
 export const searchGithub = defineCachedFunction(
   async (
     event: H3Event,
@@ -37,7 +30,7 @@ export const searchGithub = defineCachedFunction(
     params: Omit<SearchParams, 'endpoint'>
   ) => {
     console.log(
-      'incoming searchGitbub request for endpoint',
+      'incoming searchGitHub request for endpoint',
       endpoint,
       'with params: ',
       params
@@ -67,17 +60,37 @@ export const searchGithub = defineCachedFunction(
   },
   {
     maxAge: 60 * 60,
-    name: 'githubSearch',
+    group: 'github',
+    name: 'search',
     getKey: (
       event: H3Event,
       endpoint: string,
       params: Omit<SearchParams, 'endpoint'>
     ) => {
-      const q = params.q.toLowerCase().split(' ').sort();
+      const q = params.q.trim().toLowerCase().split(' ');
 
-      return `${endpoint}:q:${q.join(' ')}}:per_page:${params.per_page}${
-        params.order ? ':order:' + params.order : ''
-      }${params.sort ? ':sort:' + params.sort : ''}`;
+      const mainQuery = q.filter((term) => !term.includes(':')).join(' ');
+      const qualifiers = q.filter((term) => term.includes(':')).sort();
+
+      const finalQuery = [...(mainQuery ? [mainQuery] : []), ...qualifiers]
+        .join(' ')
+        .replace(/[\s:]/g, '_');
+
+      let key = endpoint + '_q_' + finalQuery;
+
+      if (params.per_page) {
+        key += '_per_page_' + params.order;
+      }
+
+      if (params.order) {
+        key += '_order_' + params.order;
+      }
+
+      if (params.sort) {
+        key += '_sort_' + params.sort;
+      }
+
+      return key;
     },
   }
 );
