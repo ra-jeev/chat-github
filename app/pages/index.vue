@@ -3,8 +3,8 @@
     <AppHeader />
 
     <main class="flex-grow flex flex-col justify-center items-center relative">
-      <div class="max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6">
+      <div class="w-full max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6">
           <span class="text-primary">Search GitHub</span>
           <br />
           in Plain English
@@ -49,7 +49,7 @@
       <div class="absolute inset-x-0 bottom-0">
         <UContainer class="flex justify-between items-end">
           <ExpandablePanel
-            title="Trending Users"
+            title="Most Searched"
             title-icon="i-heroicons-arrow-trending-up-16-solid"
             expand-direction="right"
           >
