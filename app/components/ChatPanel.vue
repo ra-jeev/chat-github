@@ -26,6 +26,7 @@
     <UDivider />
     <div class="flex items-start p-3.5 relative w-full max-w-4xl mx-auto">
       <UTextarea
+        ref="userInput"
         v-model="userMessage"
         placeholder="How can I help you today?"
         class="w-full"
@@ -88,6 +89,8 @@ const onQuerySelect = (query: string) => {
   sendMessage();
 };
 
+const userInput = useTemplateRef('userInput');
+
 const sendMessage = async () => {
   if (!userMessage.value.trim()) return;
 
@@ -120,6 +123,10 @@ const sendMessage = async () => {
         loading.value = false;
       }
     }
+
+    nextTick(() => {
+      userInput.value?.textarea.focus();
+    });
   } catch (error) {
     console.error(error);
     messages.value.pop();
