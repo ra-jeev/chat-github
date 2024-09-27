@@ -32,6 +32,15 @@ export default defineNitroPlugin(() => {
         `CREATE INDEX IF NOT EXISTS idx_search_count_last_searched ON trending_users(search_count DESC, last_searched DESC);
       `.replace(/\n/g, '')
       );
+
+      await hubDatabase().exec(
+        `CREATE TABLE IF NOT EXISTS registered_users (
+          username TEXT PRIMARY KEY,
+          avatar_url TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+      `.replace(/\n/g, '')
+      );
     });
   }
 });
