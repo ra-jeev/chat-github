@@ -54,7 +54,7 @@
             title="Most Searched"
             title-icon="i-heroicons-arrow-trending-up-16-solid"
             expand-direction="right"
-            class="absolute bottom-11 sm:static"
+            class="absolute bottom-10 sm:static"
           >
             <TrendingUsers />
           </ExpandablePanel>
