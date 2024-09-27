@@ -4,8 +4,7 @@ const rtf = new Intl.RelativeTimeFormat('en', {
 });
 
 export default (timestamp: string) => {
-  const timeAgo = (Date.now() - new Date(timestamp + ' UTC').getTime()) / 1000;
-
+  const timeAgo = (Date.now() - new Date(timestamp + 'Z').getTime()) / 1000;
   if (timeAgo < 60) {
     return rtf.format(-Math.round(timeAgo), 'second');
   } else if (timeAgo < 3600) {
