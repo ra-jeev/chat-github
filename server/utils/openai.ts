@@ -136,27 +136,37 @@ export const handleMessageWithOpenAI = async function* (
             });
           } catch (error) {
             console.error('Error parsing tool call arguments:', error);
+            throw error;
           }
         }
       }
 
-      const finalResponse = await openai.chat.completions.create({
-        model: MODEL,
-        messages,
-        stream: true,
-      });
+      try {
+        const finalResponse = await openai.chat.completions.create({
+          model: MODEL,
+          messages,
+          stream: true,
+        });
 
-      for await (const chunk of finalResponse) {
-        if (chunk.choices[0].delta.content) {
-          queryToSave.assistantReply += chunk.choices[0].delta.content;
-          yield `data: ${JSON.stringify({
-            response: chunk.choices[0].delta.content,
-          })}\n\n`;
+        for await (const chunk of finalResponse) {
+          if (chunk.choices[0].delta.content) {
+            queryToSave.assistantReply += chunk.choices[0].delta.content;
+            yield `data: ${JSON.stringify({
+              response: chunk.choices[0].delta.content,
+            })}\n\n`;
+          }
         }
-      }
 
-      if (queryToSave.toolCalls.length) {
-        await saveUserQuery(loggedInUser, queryToSave);
+        if (queryToSave.toolCalls.length) {
+          await saveUserQuery(loggedInUser, queryToSave);
+        }
+      } catch (error) {
+        console.error(
+          'Error generating final response or saving user query :',
+          error
+        );
+
+        throw error;
       }
     }
   }

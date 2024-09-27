@@ -42,6 +42,8 @@ export const searchGithub = defineCachedFunction(
     try {
       const response = await octokit.request(endpointToUse as string, params);
 
+      console.log(`Generated response for ${endpoint} with params:`, params);
+
       return response.data;
     } catch (error) {
       console.error(error);
