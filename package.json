@@ -17,7 +17,6 @@
     "@nuxthub/core": "^0.7.20",
     "@nuxtjs/mdc": "^0.9.0",
     "@octokit/rest": "^21.0.2",
-    "groq-sdk": "^0.7.0",
     "nuxt": "^3.13.2",
     "nuxt-auth-utils": "^0.3.9",
     "openai": "^4.64.0",
