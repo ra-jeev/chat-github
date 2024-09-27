@@ -2,6 +2,7 @@
   <NuxtRouteAnnouncer />
   <NuxtLoadingIndicator />
   <NuxtPage />
+  <UNotifications />
 </template>
 
 <script setup lang="ts">

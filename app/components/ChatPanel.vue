@@ -89,6 +89,7 @@ const onQuerySelect = (query: string) => {
   sendMessage();
 };
 
+const toast = useToast();
 const userInput = useTemplateRef('userInput');
 
 const sendMessage = async () => {
@@ -132,6 +133,14 @@ const sendMessage = async () => {
     messages.value.pop();
     userMessage.value = tmpMessage;
     loading.value = false;
+
+    toast.add({
+      title: 'Request Error',
+      description: 'Failed to generate a response, please try again.',
+      timeout: 10000,
+      icon: 'i-heroicons-exclamation-triangle-16-solid',
+      color: 'red',
+    });
   }
 };
 </script>
