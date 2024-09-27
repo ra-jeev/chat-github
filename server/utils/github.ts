@@ -72,7 +72,7 @@ export const searchGithub = defineCachedFunction(
       let key = endpoint + '_q_' + finalQuery;
 
       if (params.per_page) {
-        key += '_per_page_' + params.order;
+        key += '_per_page_' + params.per_page;
       }
 
       if (params.order) {
