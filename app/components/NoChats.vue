@@ -23,15 +23,31 @@
         }"
         @click="$emit('query-select', suggestion)"
       >
-        <div class="flex items-center">
+        <div class="flex items-center gap-x-2">
           <UIcon
-            name="i-heroicons-information-circle"
-            class="text-primary-600 dark:text-primary-300 w-5 h-5 mr-2"
+            name="i-heroicons-light-bulb"
+            class="text-primary-600 dark:text-primary-300 w-5 h-5"
           />
           <p class="text-gray-700 dark:text-gray-200">{{ suggestion }}</p>
         </div>
       </UCard>
     </div>
+
+    <UCard
+      :ui="{
+        background: 'bg-gray-100/50 dark:bg-gray-800/50',
+      }"
+      class="mt-6"
+    >
+      <div class="space-y-2 text-gray-500 dark:text-gray-400">
+        <h2 class="text-lg font-medium">Points to note:</h2>
+        <ul class="list-disc pl-4 space-y-2">
+          <li v-for="(point, index) in importantPoints" :key="index">
+            {{ point }}
+          </li>
+        </ul>
+      </div>
+    </UCard>
   </div>
 </template>
 
@@ -41,10 +57,17 @@ defineEmits(['query-select']);
 const { user } = useUserSession();
 
 const suggestions = [
-  'Find my first pull request',
+  'Find my first pull request.',
   'How many repositories do I have?',
   'What was my first commit?',
-  'Find my most starred repository',
+  'Find my most starred repository.',
+];
+
+const importantPoints = [
+  'This tool only fetches publicly available information from GitHub.',
+  'For best results, use GitHub usernames when querying about other users.',
+  `It may not always find what you're looking for and occasional mistakes may occur.`,
+  'Only your queries about other users are saved anonymously.',
 ];
 
 const timeOfDay = computed(() => {
