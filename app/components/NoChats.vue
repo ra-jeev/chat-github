@@ -42,7 +42,7 @@ const { user } = useUserSession();
 
 const suggestions = [
   'Find my first pull request',
-  'Show my last 5 commits',
+  'How many repositories do I have?',
   'What was my first commit?',
   'Find my most starred repository',
 ];
