@@ -11,6 +11,7 @@ export default oauthGitHubEventHandler({
       },
     });
 
+    await saveUser(user.login, user.avatar_url);
     return sendRedirect(event, '/chat');
   },
   // Optional, will return a json error and 401 status code by default

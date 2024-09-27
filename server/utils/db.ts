@@ -131,3 +131,13 @@ export const getRecentQueries = async () => {
   console.log('getRecentQueries: ', result);
   return result.results;
 };
+
+export const saveUser = async (username: string, avatarUrl: string) => {
+  const db = hubDatabase();
+  await db
+    .prepare(
+      'INSERT INTO registered_users (username, avatar_url) VALUES (?1, ?2) ON CONFLICT(username) DO UPDATE SET avatar_url = excluded.avatar_url'
+    )
+    .bind(username, avatarUrl)
+    .run();
+};
