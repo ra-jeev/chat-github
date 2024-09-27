@@ -30,6 +30,7 @@ useSeoMeta({
   ogTitle: 'Chat GitHub - Search GitHub in Plain English',
   description:
     'Chat GitHub is an AI powered chat interface that lets you search GitHub in everyday language. No need to remember complex query syntax.',
+  ogImage: 'https://chat-github.nuxt.dev/home.png',
   twitterCard: 'summary_large_image',
 });
 </script>
