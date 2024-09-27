@@ -3,11 +3,11 @@
     :class="[
       expanded &&
         `w-full ${maxExpandedWidth} ${expandedHeight} overflow-hidden`,
-      'flex flex-col bg-white/85 dark:bg-gray-900/85 sm:bg-white/50 sm:dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg transition-all',
+      'flex flex-col bg-white/85 dark:bg-gray-900/85 sm:bg-white/70 sm:dark:bg-gray-900/70 rounded-lg shadow-lg transition-all',
     ]"
   >
     <div
-      class="flex items-center justify-between sm:text-lg font-medium gap-x-4 px-3.5 py-2.5 cursor-pointer bg-primary/70 sm:bg-primary/50 rounded-t-lg"
+      class="flex items-center justify-between sm:text-lg font-medium gap-x-4 px-3.5 py-2.5 cursor-pointer bg-primary/70 sm:bg-primary/60 rounded-t-lg"
       :class="{ 'rounded-b-lg': !expanded }"
       @click="expanded = !expanded"
     >
@@ -60,6 +60,12 @@ const props = withDefaults(
     expandedHeight: 'h-64',
   }
 );
+
+const close = () => {
+  expanded.value = false;
+};
+
+defineExpose({ close });
 
 const expandIcon = computed(() => {
   /* eslint-disable @stylistic/operator-linebreak */

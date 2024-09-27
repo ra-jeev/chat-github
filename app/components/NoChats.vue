@@ -37,7 +37,7 @@
       :ui="{
         background: 'bg-gray-100/50 dark:bg-gray-800/50',
       }"
-      class="mt-6"
+      class="mt-4"
     >
       <div class="space-y-2 text-gray-500 dark:text-gray-400">
         <h2 class="text-lg font-medium">Points to note:</h2>

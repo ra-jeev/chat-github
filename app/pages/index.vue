@@ -51,6 +51,7 @@
           class="flex flex-wrap justify-center sm:justify-between items-end min-h-12 relative"
         >
           <ExpandablePanel
+            ref="mostSearchedPanel"
             title="Most Searched"
             title-icon="i-heroicons-arrow-trending-up-16-solid"
             expand-direction="right"
@@ -60,6 +61,7 @@
           </ExpandablePanel>
 
           <ExpandablePanel
+            ref="recentQueriesPanel"
             title="Recent Queries"
             title-icon="i-heroicons-clock-solid"
             expand-direction="left"
@@ -76,3 +78,27 @@
     <AppFooter />
   </div>
 </template>
+
+<script setup lang="ts">
+onMounted(() => {
+  document.addEventListener('click', handleOutsideClick);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleOutsideClick);
+});
+
+const mostSearchedPanel = useTemplateRef('mostSearchedPanel');
+const recentQueriesPanel = useTemplateRef('recentQueriesPanel');
+const handleOutsideClick = (event: MouseEvent) => {
+  const clickedOutside = ![
+    mostSearchedPanel.value?.$el,
+    recentQueriesPanel.value?.$el,
+  ].some((el) => el && el.contains(event.target));
+
+  if (clickedOutside) {
+    mostSearchedPanel.value?.close();
+    recentQueriesPanel.value?.close();
+  }
+};
+</script>
