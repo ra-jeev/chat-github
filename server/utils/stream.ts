@@ -20,6 +20,13 @@ export const asyncGeneratorToStream = (
       } catch (err) {
         controller.error(err);
         console.log('Error in stream:', err);
+
+        throw createError({
+          statusCode: 500,
+          statusMessage: 'Internal Server Error',
+          message:
+            err instanceof Error ? err.message : 'An unknown error occurred',
+        });
       }
     },
     cancel(reason) {
