@@ -66,8 +66,9 @@ const suggestions = [
 const importantPoints = [
   'This tool only fetches publicly available information from GitHub.',
   'For best results, use GitHub usernames when querying about other users.',
+  'Use exact dates / time range for queries involving time (e.g., prefer 2024 over last year).',
   `It may not always find what you're looking for and occasional mistakes may occur.`,
-  'Only your queries about other users are saved anonymously.',
+  'Only queries about other users and failed queries are saved anonymously.',
 ];
 
 const timeOfDay = computed(() => {

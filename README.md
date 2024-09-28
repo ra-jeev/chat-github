@@ -84,6 +84,8 @@ Tips for effective searching:
 
 - Use GitHub usernames for more accurate results when searching for specific users.
 - Be as specific as possible in your queries for the best results.
+- Keep queries relatively simple. Complex queries may not work as expected.
+- 'Use exact dates / time range for queries involving time (e.g., prefer 2024 over last year).'.
 - Remember, the app can only access public data unless your `GITHUB_TOKEN` has additional permissions.
 
 Note: GitHub API has rate limits. If you encounter any issues, wait a few minutes before trying again.
