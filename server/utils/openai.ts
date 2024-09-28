@@ -136,6 +136,11 @@ export const handleMessageWithOpenAI = async function* (
             });
           } catch (error) {
             console.error('Error parsing tool call arguments:', error);
+            await saveFailedQuery(
+              queryToSave.userMessage,
+              toolCall.function.arguments
+            );
+
             throw error;
           }
         }

@@ -141,3 +141,16 @@ export const saveUser = async (username: string, avatarUrl: string) => {
     .bind(username, avatarUrl)
     .run();
 };
+
+export const saveFailedQuery = async (
+  queryText: string,
+  toolCallRequest: string
+) => {
+  const db = hubDatabase();
+  await db
+    .prepare(
+      'INSERT INTO failed_queries (text, github_request) VALUES (?1, ?2)'
+    )
+    .bind(queryText, toolCallRequest)
+    .run();
+};

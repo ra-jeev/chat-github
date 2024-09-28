@@ -41,6 +41,16 @@ export default defineNitroPlugin(() => {
         );
       `.replace(/\n/g, '')
       );
+
+      await hubDatabase().exec(
+        `CREATE TABLE IF NOT EXISTS failed_queries (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          text TEXT NOT NULL,
+          github_request TEXT NOT NULL,
+          queried_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+      `.replace(/\n/g, '')
+      );
     });
   }
 });
