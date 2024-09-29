@@ -7,7 +7,7 @@
     ]"
   >
     <div
-      class="flex items-center justify-between sm:text-lg font-medium gap-x-4 px-3.5 py-2.5 cursor-pointer bg-primary/70 sm:bg-primary/60 rounded-t-lg"
+      class="flex items-center justify-between sm:text-lg font-medium leading-none gap-x-3 px-3.5 py-2.5 cursor-pointer bg-primary/70 sm:bg-primary/60 rounded-t-lg"
       :class="{ 'rounded-b-lg': !expanded }"
       @click="expanded = !expanded"
     >

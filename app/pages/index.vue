@@ -3,7 +3,7 @@
     <AppHeader />
 
     <main class="flex-grow flex flex-col justify-center items-center relative">
-      <div class="w-full max-w-3xl px-4 sm:px-6 lg:px-8 text-center py-16">
+      <div class="w-full max-w-3xl px-4 sm:px-6 lg:px-8 text-center py-12">
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6">
           <span class="text-primary">Search GitHub</span>
           <br />
@@ -48,14 +48,14 @@
 
       <div class="w-full px-1 sm:absolute inset-x-0 bottom-0">
         <UContainer
-          class="flex flex-wrap justify-center sm:justify-between items-end min-h-12 relative"
+          class="flex justify-center sm:justify-between items-end min-h-20 sm:h-auto relative"
         >
           <ExpandablePanel
             ref="mostSearchedPanel"
             title="Most Searched"
             title-icon="i-heroicons-arrow-trending-up-16-solid"
             expand-direction="right"
-            class="absolute bottom-10 sm:static"
+            class="absolute bottom-12 sm:static"
           >
             <TrendingUsers />
           </ExpandablePanel>
