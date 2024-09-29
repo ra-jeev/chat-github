@@ -18,15 +18,24 @@ export const asyncGeneratorToStream = (
         console.log('Stream ended. Closing connection.');
         controller.close();
       } catch (err) {
-        controller.error(err);
         console.log('Error in stream:', err);
 
-        throw createError({
-          statusCode: 500,
-          statusMessage: 'Internal Server Error',
-          message:
-            err instanceof Error ? err.message : 'An unknown error occurred',
-        });
+        /* eslint-disable @stylistic/operator-linebreak */
+        const errorMessage =
+          err instanceof Error
+            ? err.message
+            : 'An error occurred in the stream';
+        /* eslint-enable @stylistic/operator-linebreak */
+
+        controller.enqueue(
+          encoder.encode(
+            `event: error\ndata: ${JSON.stringify({
+              message: errorMessage,
+            })}\n\n`
+          )
+        );
+
+        controller.close();
       }
     },
     cancel(reason) {
