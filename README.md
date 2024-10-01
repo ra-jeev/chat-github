@@ -6,6 +6,8 @@
 
 Chat GitHub Demo: <https://chat-github.nuxt.dev>
 
+[![Deploy to NuxtHub](https://hub.nuxt.com/button.svg)](https://hub.nuxt.com/new?template=chat-github)
+
 ## Overview
 
 Chat GitHub is an innovative tool that allows you to search and explore GitHub using natural language queries, powered by AI. Say goodbye to complex search parameters and hello to intuitive, conversation-style GitHub exploration.
@@ -91,6 +93,8 @@ Tips for effective searching:
 Note: GitHub API has rate limits. If you encounter any issues, wait a few minutes before trying again.
 
 ## Deployment
+
+[![Deploy to NuxtHub](https://hub.nuxt.com/button.svg)](https://hub.nuxt.com/new?template=chat-github)
 
 Before you can deploy the project you should have the following:
 
