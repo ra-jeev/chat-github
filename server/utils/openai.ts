@@ -32,7 +32,7 @@ const tools: OpenAI.ChatCompletionTool[] = [
           per_page: {
             type: 'string',
             description:
-              'Number of results to fetch per page (optional, max 25)',
+              'Number of results to fetch per page (max 25)',
           },
         },
         required: ['endpoint', 'q', 'per_page'],
