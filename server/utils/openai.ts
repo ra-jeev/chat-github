@@ -31,8 +31,7 @@ const tools: OpenAI.ChatCompletionTool[] = [
           },
           per_page: {
             type: 'string',
-            description:
-              'Number of results to fetch per page (max 25)',
+            description: 'Number of results to fetch per page (max 25)',
           },
         },
         required: ['endpoint', 'q', 'per_page'],
@@ -72,7 +71,7 @@ export const handleMessageWithOpenAI = async function* (
     const choice = chunk.choices[0];
 
     if (choice.delta.content) {
-      yield `data: ${JSON.stringify({ response: choice.delta.content })}\n\n`;
+      yield choice.delta.content;
     }
 
     if (choice.delta.tool_calls) {
@@ -156,9 +155,7 @@ export const handleMessageWithOpenAI = async function* (
         for await (const chunk of finalResponse) {
           if (chunk.choices[0].delta.content) {
             queryToSave.assistantReply += chunk.choices[0].delta.content;
-            yield `data: ${JSON.stringify({
-              response: chunk.choices[0].delta.content,
-            })}\n\n`;
+            yield chunk.choices[0].delta.content;
           }
         }
 
@@ -175,7 +172,4 @@ export const handleMessageWithOpenAI = async function* (
       }
     }
   }
-
-  // Send done to signal end of stream
-  yield `data: [DONE]\n\n`;
 };

@@ -5,17 +5,20 @@ export const asyncGeneratorToStream = (
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
-      console.log('Client connected. Starting stream.');
       try {
         for await (const value of asyncGenerator) {
           if (cancelled) {
             break;
           }
 
-          controller.enqueue(encoder.encode(value));
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify({ response: value })}\n\n`)
+          );
         }
 
-        console.log('Stream ended. Closing connection.');
+        // Send done to signal end of stream
+        controller.enqueue(encoder.encode(`data: [DONE]\n\n`));
+
         controller.close();
       } catch (err) {
         console.log('Error in stream:', err);
