@@ -12,6 +12,8 @@ Chat GitHub Demo: <https://chat-github.nuxt.dev>
 
 Chat GitHub is an innovative tool that allows you to search and explore GitHub using natural language queries, powered by AI. Say goodbye to complex search parameters and hello to intuitive, conversation-style GitHub exploration.
 
+[Read the blog post on how I created Chat GitHub](https://rajeev.dev/building-a-chat-interface-to-search-github?ref=github-repo).
+
 [![CHAT GITHUB](/assets/chat.png)](https://chat-github.nuxt.dev)
 
 ## Features
